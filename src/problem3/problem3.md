@@ -106,104 +106,63 @@ Explicitly specify which props are passed to the root element.
 
 ```
 interface WalletBalance {
-
-currency: string;
-
-amount: number;
-
-blockchain: string;
-
+  currency: string;
+  amount: number;
+  blockchain: string;
 }
-
 
 interface FormattedWalletBalance extends WalletBalance {
-
-formatted: string;
-
+  formatted: string;
 }
-
 
 interface Props extends BoxProps {}
 
-
 const priorityMap: Record<string, number> = {
-
-Osmosis: 100,
-
-Ethereum: 50,
-
-Arbitrum: 30,
-
-Zilliqa: 20,
-
-Neo: 20,
-
+  Osmosis: 100,
+  Ethereum: 50,
+  Arbitrum: 30,
+  Zilliqa: 20,
+  Neo: 20,
 };
 
-
-const getPriority = (blockchain: string): number => priorityMap[blockchain] ?? -99;
-
+const getPriority = (blockchain: string): number =>
+  priorityMap[blockchain] ?? -99;
 
 const WalletPage: React.FC<Props> = ({ children, ...rest }: Props) => {
+  const balances = useWalletBalances();
+  const prices = usePrices();
 
-const balances = useWalletBalances();
+  const formattedBalances = useMemo(() => {
+    if (!balances || !prices) return [];
 
-const prices = usePrices();
+    return balances
+      .filter(
+        (balance) => getPriority(balance.blockchain) > -99 && balance.amount > 0
+      )
+      .sort((lhs, rhs) => getPriority(rhs.blockchain) - getPriority(lhs.blockchain))
+      .map((balance) => ({
+        ...balance,
+        formatted: balance.amount.toFixed(2),
+      }));
+  }, [balances, prices]);
 
+  const rows = useMemo(() => {
+    return formattedBalances.map((balance) => {
+      const usdValue = prices[balance.currency] * balance.amount;
 
-const formattedBalances = useMemo(() => {
+      return (
+        <WalletRow
+          className="wallet-row"
+          key={balance.currency}
+          amount={balance.amount}
+          usdValue={usdValue}
+          formattedAmount={balance.formatted}
+        />
+      );
+    });
+  }, [formattedBalances, prices]);
 
-if (!balances || !prices) return [];
-
-
-return balances
-
-.filter((balance) => getPriority(balance.blockchain) > -99 && balance.amount > 0)
-
-.sort((lhs, rhs) => getPriority(rhs.blockchain) - getPriority(lhs.blockchain))
-
-.map((balance) => ({
-
-...balance,
-
-formatted: balance.amount.toFixed(2),
-
-}));
-
-}, [balances, prices]);
-
-
-const rows = useMemo(() => {
-
-return formattedBalances.map((balance) => {
-
-const usdValue = prices[balance.currency] * balance.amount;
-
-return (
-
-<WalletRow
-
-className="wallet-row"
-
-key={balance.currency}
-
-amount={balance.amount}
-
-usdValue={usdValue}
-
-formattedAmount={balance.formatted}
-
-/>
-
-);
-
-});
-
-}, [formattedBalances, prices]);
-
-
-return <div {...rest}>{rows}</div>;
-
+  return <div {...rest}>{rows}</div>;
 };
 ```
 
