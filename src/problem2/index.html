@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fancy Form - Currency Swap</title>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="container">
+      <form id="swap-form">
+        <h3>Currency Swap</h3>
+
+        <!-- Input Amount -->
+        <label for="input-amount">Amount to send</label>
+        <input
+          id="input-amount"
+          type="number"
+          placeholder="Enter amount"
+          required
+        />
+
+        <!-- Select From Currency -->
+        <label for="from-currency">From</label>
+        <select id="from-currency" required>
+          <option value="">Select currency</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="JPY">JPY</option>
+        </select>
+
+        <!-- Select To Currency -->
+        <label for="to-currency">To</label>
+        <select id="to-currency" required>
+          <option value="">Select currency</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="JPY">JPY</option>
+        </select>
+
+        <!-- Output Amount -->
+        <label for="output-amount">Amount to receive</label>
+        <input id="output-amount" type="text" readonly />
+
+        <!-- Confirm Button -->
+        <button type="submit" id="confirm-btn">CONFIRM SWAP</button>
+        <p id="error-msg" class="error-msg"></p>
+      </form>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
