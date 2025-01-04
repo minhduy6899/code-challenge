@@ -1,6 +1,4 @@
-# Problem 3
-
-# Issues and Anti-Patterns
+# Problem 3: Issues and Anti-Patterns
 
 ## 1. Misuse of useMemo
 
