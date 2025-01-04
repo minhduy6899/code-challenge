@@ -4,107 +4,107 @@
 
 ## 1. Misuse of useMemo
 
-· Problem:
+#### Problem:
 
-o useMemo is used to memoize sortedBalances, but the function inside it is unnecessarily complex, containing filtering and sorting logic that could be simplified or moved elsewhere.
+useMemo is used to memoize sortedBalances, but the function inside it is unnecessarily complex, containing filtering and sorting logic that could be simplified or moved elsewhere.
 
-o Dependencies (balances, prices) may trigger unnecessary recomputations, especially when they do not change frequently.
+Dependencies (balances, prices) may trigger unnecessary recomputations, especially when they do not change frequently.
 
-· Solution:
+#### Solution:
 
-o Simplify the logic in useMemo or move the computation to a dedicated utility function or hook. Ensure dependencies are accurate.
+Simplify the logic in useMemo or move the computation to a dedicated utility function or hook. Ensure dependencies are accurate.
 
 ---
 
 ## 2. Inefficient Sorting Logic
 
-· Problem:
+#### Problem:
 
-o Sorting and filtering are mixed, reducing readability and increasing complexity.
+Sorting and filtering are mixed, reducing readability and increasing complexity.
 
-o filter condition is flawed as it references lhsPriority, which is undefined.
+filter condition is flawed as it references lhsPriority, which is undefined.
 
-· Solution:
+#### Solution:
 
-o Separate filtering and sorting into distinct steps. Correct the variable reference for priority calculation.
+Separate filtering and sorting into distinct steps. Correct the variable reference for priority calculation.
 
 ---
 
 ## 3. Hardcoded Priorities
 
-· Problem:
+#### Problem:
 
-o getPriority uses hardcoded values for priority mapping, making it difficult to maintain or extend.
+getPriority uses hardcoded values for priority mapping, making it difficult to maintain or extend.
 
-· Solution:
+#### Solution:
 
-o Use a mapping object or configuration file for blockchain priorities.
+Use a mapping object or configuration file for blockchain priorities.
 
 ---
 
 ## 4. Incorrect Type Usage
 
-· Problem:
+#### Problem:
 
-o WalletBalance is used inconsistently (e.g., missing blockchain in the interface).
+WalletBalance is used inconsistently (e.g., missing blockchain in the interface).
 
-o FormattedWalletBalance is not fully utilized where required.
+FormattedWalletBalance is not fully utilized where required.
 
-· Solution:
+#### Solution:
 
-o Update WalletBalance to include blockchain and use correct types consistently.
+Update WalletBalance to include blockchain and use correct types consistently.
 
 ---
 
 ## 5. Inefficient Mapping
 
-· Problem:
+#### Problem:
 
-o Both sortedBalances and formattedBalances loop over the same data but perform redundant operations.
+Both sortedBalances and formattedBalances loop over the same data but perform redundant operations.
 
-· Solution:
+#### Solution:
 
-o Combine these mappings into a single step.
+Combine these mappings into a single step.
 
 ---
 
 ## 6. Key Usage in React
 
-· Problem:
+#### Problem:
 
-o Using index as a key in rows can lead to rendering bugs when the list is reordered or modified.
+Using index as a key in rows can lead to rendering bugs when the list is reordered or modified.
 
-· Solution:
+#### Solution:
 
-o Use a unique identifier from the data (e.g., currency) as the key.
+Use a unique identifier from the data (e.g., currency) as the key.
 
 ---
 
 ## 7. Side Effects in Functional Components
 
-· Problem:
+#### Problem:
 
-o Potential reliance on prices and balances without ensuring their validity (e.g., null or undefined values).
+Potential reliance on prices and balances without ensuring their validity (e.g., null or undefined values).
 
-· Solution:
+#### Solution:
 
-o Validate data before processing or rendering.
+Validate data before processing or rendering.
 
 ---
 
 ## 8. Overuse of Props Spread
 
-· Problem:
+#### Problem:
 
-o Spreading props (...rest) into the root div without specifying allowed attributes can unintentionally add unwanted attributes.
+Spreading props (...rest) into the root div without specifying allowed attributes can unintentionally add unwanted attributes.
 
-· Solution:
+#### Solution:
 
-o Explicitly specify which props are passed to the root element.
+Explicitly specify which props are passed to the root element.
 
 ---
 
-### Refactored Code
+## Refactored Code
 
 ```
 interface WalletBalance {
@@ -215,24 +215,24 @@ return <div {...rest}>{rows}</div>;
 
 ### 1. Efficient Data Handling:
 
-o Combined filtering, sorting, and formatting into a single useMemo block for clarity and efficiency.
+Combined filtering, sorting, and formatting into a single useMemo block for clarity and efficiency.
 
 ### 2. Priority Mapping:
 
-o Replaced the getPriority function with a priorityMap object for maintainability.
+Replaced the getPriority function with a priorityMap object for maintainability.
 
 ### 3. Key Assignment:
 
-o Used a unique identifier (currency) instead of index as the React key.
+Used a unique identifier (currency) instead of index as the React key.
 
 ### 4. Type Safety:
 
-o Added blockchain to WalletBalance and used FormattedWalletBalance consistently.
+Added blockchain to WalletBalance and used FormattedWalletBalance consistently.
 
 ### 5. Prop Handling:
 
-o Spread props thoughtfully and validated input data (balances, prices) to avoid runtime errors.
+Spread props thoughtfully and validated input data (balances, prices) to avoid runtime errors.
 
 ### 6. Readability:
 
-o Simplified and organized the code for better maintainability and comprehension.
+Simplified and organized the code for better maintainability and comprehension.
