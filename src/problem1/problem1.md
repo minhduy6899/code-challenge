@@ -36,8 +36,9 @@ console.log(summationFormula(n)); // Output: 15
 
 ### 3. Recursive Approach
 
-This method uses recursion to calculate the summation.
+#### This method uses recursion to calculate the summation.
 
+```
 function summationRecursive(n) {
 if (n === 0) {
 return 0;
@@ -48,8 +49,9 @@ return n + summationRecursive(n - 1);
 // Example usage
 const n = 5;
 console.log(summationRecursive(n)); // Output: 15
+```
 
-Key Differences
+#### Key Differences
 
 Iterative: Uses a loop, straightforward and efficient for all n.
 
